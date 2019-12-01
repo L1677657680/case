@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<th:block th:include="include :: header('基本表单')" />
+	<th:block th:include="include :: jquery-steps-css" />
+</head>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>融资申请步骤</h5>
+                    </div>
+                    <div class="ibox-content">
+                        <p>
+                                                                      当前融资申请的进度
+                        </p>
+                        <div id="wizard">
+                            <h1>申请融资</h1>
+                            <div class="step-content">
+                                <div class="text-center m-t-md">
+                                    <h2>申请融资</h2>
+                                    <p>
+                                                                                                      您选择订单发起的融资申请
+                                    </p>
+                                </div>
+                            </div>
+
+                            <h1>确认融资</h1>
+                            <div class="step-content">
+                                <div class="text-center m-t-md">
+                                    <h2>确认融资</h2>
+                                    <p>
+                                                                                                       确认您的融资申请
+                                    </p>
+                                </div>
+                            </div>
+
+                            <h1>等待审核</h1>
+                            <div class="step-content">
+                                <div class="text-center m-t-md">
+                                    <h2>等待审核</h2>
+                                    <p>
+                                                                                                      等待融资机构审核
+                                    </p>
+                                </div>
+                            </div>
+                            <h1>电子签章</h1>
+                            <div class="step-content">
+                                <div class="text-center m-t-md">
+                                    <h2>电子签章</h2>
+                                    <p>
+                                                                                                      将申请生成的文件进行电子签章
+                                    </p>
+                                </div>
+                            </div>
+                            <h1>放款</h1>
+                            <div class="step-content">
+                                <div class="text-center m-t-md">
+                                    <h2>放款</h2>
+                                    <p>
+                                                                                                     融资机构放款流程
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+    <th:block th:include="include :: footer" />
+    <th:block th:include="include :: jquery-steps-js" />
+    <script>
+	    $(document).ready(function () {
+	        $("#wizard").steps({
+	        	startIndex:2,
+	        	enablePagination: false
+	        });
+	    });
+	</script>
+</body>
+</html>

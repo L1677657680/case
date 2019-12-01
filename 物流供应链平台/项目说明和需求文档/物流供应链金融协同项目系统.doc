@@ -1,0 +1,606 @@
+
+        <html xmlns:v="urn:schemas-microsoft-com:vml"
+        xmlns:o="urn:schemas-microsoft-com:office:office"
+        xmlns:w="urn:schemas-microsoft-com:office:word"
+        xmlns="http://www.w3.org/TR/REC-html40">
+        <head><meta http-equiv=Content-Type content="text/html;  
+        charset=utf-8">
+        <style type="text/css">
+            table  
+            {  
+                border-collapse: collapse;
+                border: none;  
+                width: 100%;  
+            }  
+            td  
+            {  
+                border: solid #CCC 1px;  
+            }  
+            .codestyle{
+                word-break: break-all;
+                background:silver;mso-highlight:silver;
+            }
+        </style>
+        <meta name=ProgId content=Word.Document>
+        <meta name=Generator content="Microsoft Word 11">
+        <meta name=Originator content="Microsoft Word 11">
+        <xml><w:WordDocument><w:View>Print</w:View></xml></head>
+        <body><h1>1、订单表</h1><div style="margin-left:20px;"><ul>
+<li>orders 订单表，储存订单信息</li>
+</ul>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">字段</th>
+<th style="text-align: left;">类型</th>
+<th style="text-align: left;">空</th>
+<th>默认</th>
+<th>注释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">id</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>订单编号</td>
+</tr>
+<tr>
+<td style="text-align: left;">number</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>订单号</td>
+</tr>
+<tr>
+<td style="text-align: left;">carrier_license_number</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>承运人营业执照</td>
+</tr>
+<tr>
+<td style="text-align: left;">carrier_name</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>承运人名称</td>
+</tr>
+<tr>
+<td style="text-align: left;">shipper_name</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>托运人名称</td>
+</tr>
+<tr>
+<td style="text-align: left;">start_area</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>起点</td>
+</tr>
+<tr>
+<td style="text-align: left;">end_area</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>终点</td>
+</tr>
+<tr>
+<td style="text-align: left;">count</td>
+<td style="text-align: left;">decimal(15,4)</td>
+<td style="text-align: left;">否</td>
+<td>0.00</td>
+<td>订单量</td>
+</tr>
+<tr>
+<td style="text-align: left;">product_name</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>货物名称</td>
+</tr>
+<tr>
+<td style="text-align: left;">contract_number</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>合同编号</td>
+</tr>
+<tr>
+<td style="text-align: left;">cost</td>
+<td style="text-align: left;">decimal(12,2)</td>
+<td style="text-align: left;">否</td>
+<td>0</td>
+<td>订单应收费用</td>
+</tr>
+<tr>
+<td style="text-align: left;">status</td>
+<td style="text-align: left;">varchar(10)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>订单状态  新订单, 已完成, 已作废, 异常订单, 调度中</td>
+</tr>
+<tr>
+<td style="text-align: left;">arrival_count</td>
+<td style="text-align: left;">decimal(15,4)</td>
+<td style="text-align: left;">否</td>
+<td>0</td>
+<td>运输完成量</td>
+</tr>
+<tr>
+<td style="text-align: left;">no_transport_count</td>
+<td style="text-align: left;">decimal(15,4)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>未完成量</td>
+</tr>
+<tr>
+<td style="text-align: left;">create_by</td>
+<td style="text-align: left;">varchar(32)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>创建人</td>
+</tr>
+<tr>
+<td style="text-align: left;">create_time</td>
+<td style="text-align: left;">date</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>创建时间</td>
+</tr>
+<tr>
+<td style="text-align: left;">update_by</td>
+<td style="text-align: left;">varchar(32)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>修改人</td>
+</tr>
+<tr>
+<td style="text-align: left;">update_time</td>
+<td style="text-align: left;">date</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>创建时间</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>备注：无</li>
+</ul></div><h1>2、运单表</h1><div style="margin-left:20px;"><ul>
+<li>waybills 运单表，储存运单信息</li>
+</ul>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">字段</th>
+<th style="text-align: left;">类型</th>
+<th style="text-align: left;">空</th>
+<th>默认</th>
+<th>注释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">id</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>运单编号</td>
+</tr>
+<tr>
+<td style="text-align: left;">number</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>运单号</td>
+</tr>
+<tr>
+<td style="text-align: left;">actual_count</td>
+<td style="text-align: left;">decimal(12,4)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>装货量</td>
+</tr>
+<tr>
+<td style="text-align: left;">back_count</td>
+<td style="text-align: left;">decimal(12,4)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>到货量</td>
+</tr>
+<tr>
+<td style="text-align: left;">driver_name</td>
+<td style="text-align: left;">varchar(11)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>司机</td>
+</tr>
+<tr>
+<td style="text-align: left;">car_vno</td>
+<td style="text-align: left;">varchar(11)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>车牌</td>
+</tr>
+<tr>
+<td style="text-align: left;">price</td>
+<td style="text-align: left;">decimal(10,2)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>单价</td>
+</tr>
+<tr>
+<td style="text-align: left;">cost</td>
+<td style="text-align: left;">decimal(10,2)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>运单应收费用</td>
+</tr>
+<tr>
+<td style="text-align: left;">load_date</td>
+<td style="text-align: left;">varchar(32)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>装货时间 格式 yyyy-MM-dd HH:mm:ss 没装货该字段为-</td>
+</tr>
+<tr>
+<td style="text-align: left;">arrival_date</td>
+<td style="text-align: left;">varchar(32)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>到货时间 格式 yyyy-MM-dd HH:mm:ss 没到货该字段为-</td>
+</tr>
+<tr>
+<td style="text-align: left;">status</td>
+<td style="text-align: left;">varchar(10)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>运单状态 已接单, 已装货, 运输中, 到货交付, 已回单, 已结算</td>
+</tr>
+<tr>
+<td style="text-align: left;">create_by</td>
+<td style="text-align: left;">varchar(32)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>创建人</td>
+</tr>
+<tr>
+<td style="text-align: left;">create_time</td>
+<td style="text-align: left;">date</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>创建时间</td>
+</tr>
+<tr>
+<td style="text-align: left;">update_by</td>
+<td style="text-align: left;">varchar(32)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>修改人</td>
+</tr>
+<tr>
+<td style="text-align: left;">update_time</td>
+<td style="text-align: left;">date</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>创建时间</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>备注：无</li>
+</ul></div><h1>3、申请订单表</h1><div style="margin-left:20px;"><ul>
+<li>apply_orders 申请订单表，储存申请订单信息</li>
+</ul>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">字段</th>
+<th style="text-align: left;">类型</th>
+<th style="text-align: left;">空</th>
+<th>默认</th>
+<th>注释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">id</td>
+<td style="text-align: left;">varchar(32)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>申请订单id</td>
+</tr>
+<tr>
+<td style="text-align: left;">apply_id</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>申请编号</td>
+</tr>
+<tr>
+<td style="text-align: left;">create_by</td>
+<td style="text-align: left;">varchar(32)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>创建人</td>
+</tr>
+<tr>
+<td style="text-align: left;">create_time</td>
+<td style="text-align: left;">datetime</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>创建时间</td>
+</tr>
+<tr>
+<td style="text-align: left;">update_by</td>
+<td style="text-align: left;">varchar(32)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>修改人</td>
+</tr>
+<tr>
+<td style="text-align: left;">update_time</td>
+<td style="text-align: left;">datetime</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>创建时间</td>
+</tr>
+<tr>
+<td style="text-align: left;">info</td>
+<td style="text-align: left;">varchar(255)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>申请信息</td>
+</tr>
+<tr>
+<td style="text-align: left;">status</td>
+<td style="text-align: left;">varchar(2)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>状态 0-已融资放款 1-正在申请 2-待审核 3-不合规则 4-待确认签章 5-审批不通过 6-已签章 7-待放款 8-不予放款 9-待撤销签章 10-已撤销</td>
+</tr>
+<tr>
+<td style="text-align: left;">sum</td>
+<td style="text-align: left;">decimal(12,2)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>申请金额</td>
+</tr>
+<tr>
+<td style="text-align: left;">loan_time</td>
+<td style="text-align: left;">datetime</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>放款时间</td>
+</tr>
+<tr>
+<td style="text-align: left;">loan_account</td>
+<td style="text-align: left;">varchar(32)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>放款账号</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>备注：无</li>
+</ul></div><h1>4、申请表与订单表中间关联表</h1><div style="margin-left:20px;"><ul>
+<li>apply_orders 申请表与订单表中间关联表，储存申请表与订单表中间关联信息</li>
+</ul>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">字段</th>
+<th style="text-align: left;">类型</th>
+<th style="text-align: left;">空</th>
+<th>默认</th>
+<th>注释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">id</td>
+<td style="text-align: left;">varchar(32)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>关联表id</td>
+</tr>
+<tr>
+<td style="text-align: left;">apply_id</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>申请表编号</td>
+</tr>
+<tr>
+<td style="text-align: left;">orders_id</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>订单表编号</td>
+</tr>
+<tr>
+<td style="text-align: left;">create_by</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;">是</td>
+<td></td>
+<td>创建人</td>
+</tr>
+<tr>
+<td style="text-align: left;">create_time</td>
+<td style="text-align: left;">datetime</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>创建时间</td>
+</tr>
+<tr>
+<td style="text-align: left;">update_by</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>修改人</td>
+</tr>
+<tr>
+<td style="text-align: left;">update_time</td>
+<td style="text-align: left;">datetime</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>修改时间</td>
+</tr>
+<tr>
+<td style="text-align: left;">status</td>
+<td style="text-align: left;">varchar(1)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>状态 0-正常 1-软删除，冻结</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>备注：无</li>
+</ul></div><h1>5、订单表与运单表中间关联表</h1><div style="margin-left:20px;"><ul>
+<li>orders_waybills订单表与运单表中间关联表，储存订单表与运单表关联信息</li>
+</ul>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">字段</th>
+<th style="text-align: left;">类型</th>
+<th style="text-align: left;">空</th>
+<th>默认</th>
+<th>注释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">uid</td>
+<td style="text-align: left;">varchar(32)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>关联表id</td>
+</tr>
+<tr>
+<td style="text-align: left;">orders_id</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>订单表编号id</td>
+</tr>
+<tr>
+<td style="text-align: left;">waybills_id</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>运单表编号id</td>
+</tr>
+<tr>
+<td style="text-align: left;">create_by</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>创建人</td>
+</tr>
+<tr>
+<td style="text-align: left;">create_time</td>
+<td style="text-align: left;">datetime</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>运单表编号id</td>
+</tr>
+<tr>
+<td style="text-align: left;">update_by</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>修改人</td>
+</tr>
+<tr>
+<td style="text-align: left;">update_time</td>
+<td style="text-align: left;">datetime</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>修改时间</td>
+</tr>
+<tr>
+<td style="text-align: left;">status</td>
+<td style="text-align: left;">varchar(1)</td>
+<td style="text-align: left;">否</td>
+<td></td>
+<td>状态 0-正常 1-软删除 冻结</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>备注：无</li>
+</ul></div><h1>6、url</h1><div style="margin-left:20px;"><ul>
+<li>url地址表，储存推送url信息</li>
+</ul>
+<table>
+<thead><tr style='background-color: rgb(0, 136, 204); color: rgb(255, 255, 255);'>
+<th style="text-align: left;">字段</th>
+<th style="text-align: left;">类型</th>
+<th style="text-align: left;">空</th>
+<th>默认</th>
+<th>注释</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">id</td>
+<td style="text-align: left;">varchar(50)</td>
+<td style="text-align: left;"></td>
+<td></td>
+<td>id</td>
+</tr>
+<tr>
+<td style="text-align: left;">name</td>
+<td style="text-align: left;">varchar(32)</td>
+<td style="text-align: left;"></td>
+<td></td>
+<td>名称</td>
+</tr>
+<tr>
+<td style="text-align: left;">code</td>
+<td style="text-align: left;">varchar(32)</td>
+<td style="text-align: left;"></td>
+<td></td>
+<td>代码</td>
+</tr>
+<tr>
+<td style="text-align: left;">create_by</td>
+<td style="text-align: left;">varchar(32)</td>
+<td style="text-align: left;"></td>
+<td></td>
+<td>创建人</td>
+</tr>
+<tr>
+<td style="text-align: left;">create_time</td>
+<td style="text-align: left;">datetime</td>
+<td style="text-align: left;"></td>
+<td></td>
+<td>创建时间</td>
+</tr>
+<tr>
+<td style="text-align: left;">update_by</td>
+<td style="text-align: left;">varchar(32)</td>
+<td style="text-align: left;"></td>
+<td></td>
+<td>修改人</td>
+</tr>
+<tr>
+<td style="text-align: left;">uupdate_time</td>
+<td style="text-align: left;">datetime</td>
+<td style="text-align: left;"></td>
+<td></td>
+<td>修改时间</td>
+</tr>
+<tr>
+<td style="text-align: left;">status</td>
+<td style="text-align: left;">varchar(2)</td>
+<td style="text-align: left;"></td>
+<td></td>
+<td>状态</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>备注：无</li>
+</ul></div></body></html>

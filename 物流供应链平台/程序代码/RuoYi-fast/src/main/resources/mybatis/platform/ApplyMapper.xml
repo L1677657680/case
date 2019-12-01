@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.platform.apply.mapper.ApplyMapper">
+	
+	<!-- 根据申请编号查询申请金额的 -->
+	<select id="getSumByApplyId" resultType="java.math.BigDecimal">
+		select 
+		SUM(distinct w.cost
+		<if test="percent != null and percent != ''">
+		* #{percent} 
+		</if>
+		) 
+		from
+		waybills w 
+		LEFT JOIN orders_waybills ow ON w.id = ow.waybills_id 
+		LEFT JOIN orders o ON o.id = ow.orders_id
+		LEFT JOIN apply_orders ao ON ao.orders_id = o.id
+		<where>
+		  ${ew.sqlSegment}
+		</where>
+	</select>
+	
+	<!-- 部门,角色,用户三表关联查询 通过条件构造器自定义条件查询-->
+	<select id="selectApplyByDeptRoleUser" resultType="com.ruoyi.project.platform.apply.domain.Apply">
+		SELECT a.*
+		FROM apply a 
+		LEFT JOIN sys_role_dept rd on rd.dept_id = a.bank_id
+		LEFT JOIN sys_user_role ur ON ur.role_id = rd.role_id
+		<where>
+		  ${ew.sqlSegment}
+		</where>
+		order by 
+		CASE WHEN a.status = 2 THEN 1
+		ELSE 2 END ASC
+	</select>
+	
+	<!-- 根据订单条件查询申请单数量 -->
+	<select id="selectApplyCountByOrdersIds" resultType="java.lang.Integer">
+		SELECT count(1)
+		FROM apply a LEFT JOIN apply_orders ao ON ao.apply_id = a.apply_id
+		LEFT JOIN orders o ON o.id = ao.orders_id
+		<where>
+		  ${ew.sqlSegment}
+		</where>
+	</select>
+	
+</mapper>

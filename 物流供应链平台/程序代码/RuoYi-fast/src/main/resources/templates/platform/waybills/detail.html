@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<th:block th:include="include :: header('详情')" />
+</head>
+<body class="gray-bg">
+     <form>
+      <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>运单信息 <small>详情</small></h5>
+                    </div>  
+                    <div class="ibox-content">
+                         <h3>运单号：<laben th:text="${waybills.number}"></laben></h3>
+                         <hr><h3>司机：<laben th:text="${waybills.driverName}"></laben></h3>
+                         <hr><h3>车牌：<laben th:text="${waybills.carVno}"></laben></h3>
+                         <hr><h3>单价：<laben th:text="${waybills.price}"></laben></h3>
+                         <hr><h3>应收费用：<laben th:text="${waybills.cost}"></laben></h3>
+                         <hr><h3>装货量：<laben th:text="${waybills.actualCount}"></laben></h3>
+                         <hr><h3>到货量：<laben th:text="${waybills.backCount}"></laben></h3>
+                         <hr><h3>装货时间：<laben th:text="${waybills.loadDate}"></laben></h3>
+                         <hr><h3>到货时间：<laben th:text="${waybills.arrivalDate}"></laben></h3>
+                         <hr><h3>运单状态：<laben th:text="${waybills.status}"></laben></h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>对应订单 <small>运单对应的订单详情</small></h5>
+                    </div>
+                     <div class="ibox-content">
+                         <h3>订单号：<laben th:text="${orders.number}"></laben></h3>
+                         <hr><h3>承运方：<laben th:text="${orders.carrierName}"></laben></h3>
+                         <hr><h3>托运方：<laben th:text="${orders.shipperName}"></laben></h3>
+                         <hr><h3>订单量：<laben th:text="${orders.count}"></laben></h3>
+                         <hr><h3>未完成量：<laben th:text="${orders.noTransportCount}"></laben></h3>
+                         <hr><h3>起点：<laben th:text="${orders.startArea}"></laben></h3>
+                         <hr><h3>终点：<laben th:text="${orders.endArea}"></laben></h3>
+                         <hr><h3>合同编号：<laben th:text="${orders.contractNumber}"></laben></h3>
+                         <hr><h3>承运方营业执照：<laben th:text="${orders.carrierLicenseNumber}"></laben></h3>
+                         <hr><h3>货物名称：<laben th:text="${orders.productName}"></laben></h3>
+                         <hr><h3>运输完成量：<laben th:text="${orders.arrivalCount}"></laben></h3>
+                         <hr><h3>应收费用：<laben th:text="${orders.cost}"></laben></h3>
+                         <hr><h3>状态：<laben th:text="${orders.status}"></laben></h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   </form>
+    <th:block th:include="include :: footer" />
+</body>
+</html>

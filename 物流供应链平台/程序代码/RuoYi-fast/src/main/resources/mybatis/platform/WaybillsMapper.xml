@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.platform.apply.mapper.WaybillsMapper">
+	<!-- 根据订单编号获取相应运单列表 -->
+	<select id="selectListByOrdersId" resultType="com.ruoyi.project.platform.apply.domain.Waybills">
+		select w.id,w.number,w.actual_count,w.back_count,w.driver_name,w.car_vno
+		,w.price,w.cost,w.load_date,w.arrival_date,w.status
+		FROM
+		waybills w LEFT JOIN orders_waybills ow ON w.id = ow.waybills_id
+		<if test="ordersId != null and ordersId != ''">
+		WHERE ow.orders_id = #{ordersId}
+		</if>
+	</select>
+</mapper>

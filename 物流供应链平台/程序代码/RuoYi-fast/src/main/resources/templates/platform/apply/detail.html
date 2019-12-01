@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('申请-详细')" />
+</head>
+<style>
+	.container-div {
+	    height: auto;
+	}
+	label.error {
+    	position: inherit;
+    }
+    .col-xs-6{
+    	font-size: 1.6rem;
+    }
+</style>
+<body class="gray-bg">
+	<div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+			    <p class="select-title">说明信息</p>
+				<div class="select-list">
+					<ul>
+						<div class="col-sm-8">
+                              <textarea id="info" class="form-control" required></textarea>
+                          </div>
+						<li style="float: right;">
+							<a class="btn btn-primary btn-rounded btn-sm" onclick="changeStatus(0)"><i class="fa fa-check"></i>&nbsp;通过</a>
+						    <a class="btn btn-danger btn-rounded btn-sm" onclick="changeStatus(1)"><i class="fa fa-close"></i>&nbsp;驳回</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12 select-table table-striped">
+				      <div class="col-xs-6 col-sm-6">
+				        融资金额: <laben  th:text="${apply.sum}"></laben>
+				      </div>
+				      <div class="col-xs-6 col-sm-6">
+				          融资机构: <laben th:text="${apply.bankName}"></laben>
+				      </div>
+				      <div class="col-xs-6 col-sm-6">
+				        融&nbsp; 资&nbsp; 方: <laben th:text="${apply.carrier}"></laben>
+				      </div>
+				      <div class="col-xs-6 col-sm-6">
+				        申请时间: <laben th:text="${#dates.format(apply.createTime, 'yyyy-MM-dd HH:mm:ss')}"></laben>
+				      </div>
+				        <div class="col-xs-6 col-sm-6">
+				       账&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 号: <laben  th:text="${apply.loanAccount}"></laben>
+				      </div>
+				      <div class="col-xs-6 col-sm-6">
+				        融资状态: <laben id="status" th:text="${apply.status}"></laben>
+				      </div>
+			</div>
+		</div>
+		<!-- 订单表格 -->
+		<div class="row">
+			<div class="col-sm-12 select-table table-striped">
+			<p class="select-title">订单列表，点击选择行显示对应运单列表</p>
+				<table id="orders-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+		<!-- 运单表格 -->
+		<div class="row">
+			<div class="col-sm-12 select-table table-striped">
+				<p class="select-title">运单列表</p>
+				<table id="waybills-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include::footer"></div>
+    <th:block th:include="include :: select2-js" />
+    <script type="text/javascript" th:inline="javascript">
+    	var datas = [[${@dict.getType('apply_status')}]];// 状态字典
+    	var waybillsDetailFlag = [[${@permission.hasPermi('platform:waybills:detail')}]];
+    	
+     	for(var i=0;i<datas.length;i++){
+    		if(datas[i].dictValue == [[${apply.status}]]){
+    			document.getElementById("status").innerText = datas[i].dictLabel;
+    		}
+    	}
+    	var ordersId;
+    	document.getElementById("info").value = [[${apply.info}]];
+	    // 订单表格
+	    $(function() {
+            var options = {
+            	id: "orders-table",
+                url: "/apply/orders/ordersListByApplyId",
+		        showSearch: false,
+		        showRefresh: false,
+		        showToggle: false,
+		        showColumns: false,
+		        clickToSelect: true,
+		        queryParams: queryParamsApplyId,
+                columns: [{
+                	radio: true
+		        },
+		        {
+					field : 'id', 
+					title : '订单id',
+					visible: false
+				},
+				{
+					field : 'number', 
+					title : '订单编号'
+				},
+				{
+					field : 'contractNumber', 
+					title : '合同编号'
+				},
+				{
+					field : 'shipperName', 
+					title : '托运人名称'
+				},
+				{
+					field : 'productName', 
+					title : '货物名称'
+				},
+				{
+					field : 'startArea', 
+					title : '起点'
+				},
+				{
+				    field : 'endArea',
+				    title : '终点'
+				},
+				{
+                    field: 'status',
+                    title: '状态',
+                    align: 'center'
+                }],
+		        onClickRow: function(row, $element){
+		        	ordersId = row.id;
+		        	$.table.destroy("waybills-table");
+		        	waybillsTable();
+		        }
+            };
+            $.table.init(options);
+            
+            
+            // 确认申请按钮
+            $("#button-confirm").click(function(){
+    	    	$.modal.confirm("确认要点击确定吗?", function() {
+    	    		if($.validate.form("ordinary-form")){// 表单校验通过才能继续下一步
+    	    			//url（地址）, data（数据）, callback（回调函数）
+    	    			var url = "/apply/confirmApply?sum=";
+    	    			$.modal.open(
+    	    				"提示", url, 850, 500, 
+    	    				function(res){//回调函数
+    	    					$.modal.close();
+    	    				}
+    	    			);
+    	    		}
+    	    	});
+    	    });
+    	    
+        });
+	    
+	    // 运单列表
+	    function waybillsTable(){
+	    	var options = {
+	            	id: "waybills-table",
+	                url: "/apply/waybills/listByOrdersId",
+	                detailUrl: "/apply/waybills/detail/{id}",
+			        showSearch: false,
+			        showRefresh: false,
+			        showToggle: false,
+			        showColumns: false,
+			        queryParams: queryParams,
+	                columns: [{
+	                	radio: true
+			        },
+					{
+						field : 'number', 
+						title : '运单编号'
+					},
+					{
+						field : 'driverName', 
+						title : '司机'
+					},
+					{
+						field : 'carVno', 
+						title : '车牌'
+					},
+					{
+						field : 'actualCount', 
+						title : '装货量'
+					},
+					{
+						field : 'backCount', 
+						title : '到货量'
+					},
+					{
+					    field : 'cost',
+					    title : '应收费用'
+					},
+					{
+	                    field: 'status',
+	                    title: '状态',
+	                    align: 'center'
+	                },
+			        {
+			            title: '操作',
+			            align: 'center',
+			            formatter: function(value, row, index) {
+			            	var actions = [];
+			            	actions.push('<a class="btn btn-success btn-xs ' + waybillsDetailFlag + '" href="javascript:void(0)" onclick="$.operate.detail(\'' + row.id + '\')"><i class="fa fa-eye"></i>查看</a> ');
+							return actions.join('');
+			            }
+			        }]
+	            };
+	    	$.table.init(options);
+	    	
+	    }
+	    
+	    // 运单条件检索
+	    function queryParams(params) {
+	        var search = $.table.queryParams(params);
+	        search.ordersId = ordersId;
+	        return search;
+	    }
+	    
+		// 订单条件检索
+	    function queryParamsApplyId(params) {
+	        var search = $.table.queryParams(params);
+	        search.applyId = [[${apply.applyId}]];
+	        return search;
+	    }
+		
+		// 通过或者驳回
+		//$.operate.post();
+		function changeStatus(type){
+			var status = [[${apply.status}]];
+			var id = [[${apply.id}]];
+			var info = document.getElementById("info").value;
+			if(status != 2){
+				$.modal.alertError("只能审批状态为待审核的申请单");
+				return;
+			}
+			$.post(
+				"/apply/passOrTurn",
+				{
+					status:status,
+					type:type,
+					id:id,
+					info:info
+				},
+				function(res){
+					if(res.code == 0){
+						$.modal.alertSuccess(res.msg);
+					}else{
+						$.modal.alertError(res.msg);
+					}
+				}
+			);
+		}
+	    
+	</script>
+</body>
+</html>

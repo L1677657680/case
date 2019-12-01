@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('订单列表')" />
+</head>
+<body class="gray-bg">
+     <div class="container-div">
+		<div class="row">
+			<div class="col-sm-12 search-collapse">
+				<form id="formId">
+					<div class="select-list">
+						<ul>
+							<li>
+								订单号：<input type="text" name="number"/>
+							</li>
+							<li>
+								合同编号：<input type="text" name="contractNumber"/>
+							</li>
+							<li>
+								承运方名：<input type="text" name="carrierName"/>
+							</li>
+
+							<li>
+								托运方名：<input type="text" name="shipperName"/>
+							</li>
+							<li>
+								状态：<select name="status">
+									<option value="">所有</option>
+									<option value="新订单">新订单</option>
+									<option value="已完成">已完成</option>
+									<option value="已作废">已作废</option>
+									<option value="异常订单">异常订单</option>
+									<option value="调度中">调度中</option>
+								</select>
+							</li>
+							<li>
+								<a class="btn btn-primary btn-rounded btn-sm" onclick="$.table.search()"><i class="fa fa-search"></i>&nbsp;搜索</a>
+								<a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+			
+	        <div class="btn-group-sm" id="toolbar" role="group">
+				<a class="btn btn-warning" onclick="$.table.exportExcel()" shiro:hasPermission="platform:orders:export">
+						<i class="fa fa-download"></i> 导出
+				 </a>
+			</div>
+			<div class="col-sm-12 select-table table-striped">
+				<table id="bootstrap-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include :: footer"></div>
+    <script th:inline="javascript">
+        var detailFlag = [[${@permission.hasPermi('platform:orders:detail')}]];
+        var prefix = ctx + "apply/orders";
+
+        $(function() {
+            var options = {
+                url: prefix + "/list",
+                detailUrl: prefix + "/detail/{id}",
+				exportUrl: prefix + "/export",
+                modalName: "订单",
+		        showExport: true,
+                columns: [{
+		            checkbox: true
+		        },
+				{
+					field : 'id', 
+					title : '订单编号',
+					visible: false
+				},
+				{
+					field : 'number', 
+					title : '订单号',
+					sortable: true
+				},
+				{
+					field : 'contractNumber', 
+					title : '合同编号',
+					sortable: true
+				},
+				{
+					field : 'carrierLicenseNumber', 
+					title : '承运人营业执照',
+					sortable: true
+				},
+				{
+					field : 'carrierName', 
+					title : '承运人名称',
+					sortable: true
+				},
+				{
+					field : 'shipperName', 
+					title : '托运人名称',
+					sortable: true
+				},
+				{
+					field : 'startArea', 
+					title : '起点',
+					sortable: true
+				},
+				{
+					field : 'endArea', 
+					title : '终点',
+					sortable: true
+				},
+				{
+					field : 'count', 
+					title : '订单量',
+					sortable: true
+				},
+				{
+					field : 'productName', 
+					title : '货物名称',
+					sortable: true
+				},
+				{
+					field : 'cost', 
+					title : '订单应收费用',
+					sortable: true
+				},
+				{
+					field : 'status', 
+					title : '状态',
+					sortable: true
+				},
+		        {
+		            title: '操作',
+		            align: 'center',
+		            formatter: function(value, row, index) {
+		            	var actions = [];
+		            	actions.push('<a class="btn btn-success btn-xs ' + detailFlag + '" href="javascript:void(0)" onclick="$.operate.detail(\'' + row.id + '\')"><i class="fa fa-eye"></i>查看</a> ');
+						return actions.join('');
+		            }
+		        }]
+            };
+            $.table.init(options);
+        });
+    </script>
+</body>
+</html>

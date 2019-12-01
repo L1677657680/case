@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+	<th:block th:include="include :: header('申请确认订单')" />
+</head>
+<style>
+	.container-div {
+	    height: auto;
+	}
+	label.error {
+    	position: inherit;
+    }
+</style>
+<body class="gray-bg">
+	<div class="container-div">
+		<div class="row">
+               <div class="col-sm-12 select-table table-striped">
+                   <div class="ibox-title">
+                       <h5>申请编号<small id="applyId" th:text="${apply.applyId}" class="m-l-sm"></small></h5>
+                   </div>
+                   <div class="ibox-content">
+                       <h2>
+                       <span>申请方：<laben th:text="${apply.carrier}"></laben></span><span style="float: right;">托运方：<laben th:text="${apply.shipper}"></laben></span><br/>
+                       </h2>
+                   </div>
+               </div>
+        </div>
+		<div class="row">
+			<div class="col-sm-12 select-table table-striped">
+			    <p class="select-title"></p>
+				<form id="ordinary-form">
+					<div class="select-list">
+						<ul>
+							<li>
+                               	 融资金额：<input name="sum" id="sum" type="text"><span class="help-block m-b-none" style="margin-left: 65px;"><i class="fa fa-info-circle"></i> 最多为订单总额的90%：<laben id="applySum" th:text="${apply.sum}"></laben></span>
+							</li>
+							<li>
+								融资机构：<select name="bankId" id="bankId">
+								</select>
+							</li>
+							<li>
+								申请状态：<input type="text" value="正在申请" readonly="readonly"/>
+							</li>
+							<li>
+								<button onclick="confirm();" class="btn btn-primary btn-rounded btn-sm" type="button"><i class="fa fa-check"></i>&nbsp;确认申请</button>
+							    <a class="btn btn-warning btn-rounded btn-sm" onclick="$.form.reset()"><i class="fa fa-refresh"></i>&nbsp;重置</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+		</div>
+		<!-- 订单表格 -->
+		<div class="row">
+			<div class="col-sm-12 select-table table-striped">
+			<p class="select-title">订单列表，点击选择行显示对应运单列表</p>
+				<table id="orders-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+		<!-- 运单表格 -->
+		<div class="row">
+			<div class="col-sm-12 select-table table-striped">
+				<p class="select-title">运单列表</p>
+				<table id="waybills-table" data-mobile-responsive="true"></table>
+			</div>
+		</div>
+	</div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript" th:inline="javascript">
+    	var ordersId;
+    	
+    	//请求融资机构列表
+    	$(function() {
+    		$.get("/system/dept/selectBank", function(result){
+    		    if(result==null) return;
+    		    var html = [];
+    			for(var i=0;i<result.length;i++){
+    				html.push("<option value='"+ result[i].deptId +"'>" + result[i].deptName + "</option>");   
+    		    }
+    			document.getElementById("bankId").innerHTML = html.join('');
+    		});
+    	});
+	    // 订单表格
+	    $(function() {
+            var options = {
+            	id: "orders-table",
+                url: "/apply/orders/ordersListByOrdersIds",
+		        showSearch: false,
+		        showRefresh: false,
+		        showToggle: false,
+		        showColumns: false,
+		        clickToSelect: true,
+		        queryParams: queryParamsOrdersIds,// 自定义参数查询
+                columns: [{
+                	radio: true
+		        },
+		        {
+					field : 'id', 
+					title : '订单id',
+					visible: false
+				},
+				{
+					field : 'number', 
+					title : '订单编号'
+				},
+				{
+					field : 'contractNumber', 
+					title : '合同编号'
+				},
+				{
+					field : 'shipperName', 
+					title : '托运人名称'
+				},
+				{
+					field : 'productName', 
+					title : '货物名称'
+				},
+				{
+					field : 'startArea', 
+					title : '起点'
+				},
+				{
+				    field : 'endArea',
+				    title : '终点'
+				},
+				{
+                    field: 'status',
+                    title: '状态',
+                    align: 'center'
+                }],
+		        onClickRow: function(row, $element){// 列点击事件
+		        	ordersId = row.id;
+		        	$.table.destroy("waybills-table");
+		        	waybillsTable();
+		        }
+            };
+            $.table.init(options);
+            
+            // 自定义校验-输入金额不能大于订单总额90%
+            $.validator.methods.amountRange = function( value, element ) {
+            	var sum = document.getElementById("applySum").innerHTML;
+            	sum = sum * 1;
+            	return sum >= value;
+  			}
+            // 表单校验
+            var icon = "<i class='fa fa-times-circle'></i> ";
+            var validator = $("#ordinary-form").validate({
+                rules: {
+                	bankId: "required",
+                    sum: {
+                    	required:true,
+                    	number:true,
+                    	amountRange: true
+                    }
+                },
+                messages: {
+                	bankId: icon + "请选择一个融资机构",
+                	sum: {
+                		required: icon + "不能为空",
+                		number: icon + "必须输入数字、小数",
+                		amountRange: icon + "融资金额数额不符"
+                	}
+                }
+            });
+        });
+	    
+	    // 运单列表
+	    function waybillsTable(){
+	    	var options = {
+	            	id: "waybills-table",
+	                url: "/apply/waybills/listByOrdersId",
+			        showSearch: false,
+			        showRefresh: false,
+			        showToggle: false,
+			        showColumns: false,
+			        clickToSelect: true,
+			        queryParams: queryParams,
+	                columns: [{
+	                	radio: true
+			        },
+					{
+						field : 'number', 
+						title : '运单编号'
+					},
+					{
+						field : 'driverName', 
+						title : '司机'
+					},
+					{
+						field : 'carVno', 
+						title : '车牌'
+					},
+					{
+						field : 'actualCount', 
+						title : '装货量'
+					},
+					{
+						field : 'backCount', 
+						title : '到货量'
+					},
+					{
+					    field : 'cost',
+					    title : '应收费用'
+					},
+					{
+	                    field: 'status',
+	                    title: '状态',
+	                    align: 'center'
+	                }]
+	            };
+	    	$.table.init(options);
+	    }
+	    
+	    // 运单条件检索
+	    function queryParams(params) {
+	        var search = $.table.queryParams(params);
+	        search.ordersId = ordersId;
+	        return search;
+	    }
+	    
+		// 订单条件检索
+	    function queryParamsOrdersIds(params) {
+	        var search = $.table.queryParams(params);
+	        search.ordersIds = [[${ordersIds}]];
+	        return search;
+	    }
+		
+	 	// 确认申请按钮
+       function confirm(){
+    	$.modal.confirm("确认要点击确定吗?", function() {
+    		if($.validate.form("ordinary-form")){// 表单校验通过才能继续下一步
+    			//url（地址）, data（数据）, callback（回调函数）
+    			var sum = document.getElementById("sum").value;
+    			var applyId = document.getElementById("applyId").innerText;
+    			var bankId = document.getElementById("bankId").value;
+    			var bankName = document.getElementById("bankId").options[document.getElementById("bankId").selectedIndex].text;
+    			var ordersIds = [[${ordersIds}]];
+    			var shipper = [[${apply.shipper}]];
+    			var factoringSum = [[${apply.sum}]];
+    			var carrier = [[${apply.carrier}]];
+    			var url = "/apply/confirmApply";
+    			$.ajax({
+    				url:url,
+    				async:false,
+    				type:'POST',
+    				dataType:'html',
+    					data:{
+    					sum:sum,
+    					applyId:applyId,
+    					bankId:bankId,
+    					bankName:bankName,
+    					ordersIds:ordersIds,
+    					shipper:shipper,
+    					factoringSum:factoringSum,
+    					carrier:carrier
+    					},
+    					success:function (result) {
+    						var options = {
+    		            		type: 1,
+    		            		title: "提示",
+    		            		url: result,
+    		            		height:500,
+    		            		function(index,layer){//回调函数
+  	    	    					location.reload();
+  	    	    				}
+    		            	};
+    						$.modal.openOptions(options);
+    					}
+    			});
+    		}
+    	});
+	 }
+	</script>
+</body>
+</html>

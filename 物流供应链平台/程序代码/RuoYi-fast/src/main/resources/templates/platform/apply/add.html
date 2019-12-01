@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" >
+<head>
+	<th:block th:include="include :: header('新增申请订单')" />
+</head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-apply-add">
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">申请订单编号：</label>
+				<div class="col-sm-8">
+					<input id="applyId" name="applyId" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">申请反馈信息：</label>
+				<div class="col-sm-8">
+					<input id="info" name="info" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">状态 ：</label>
+				<div class="col-sm-8">
+					<input id="status" name="status" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">申请金额：</label>
+				<div class="col-sm-8">
+					<input id="sum" name="sum" class="form-control" type="text">
+				</div>
+			</div>
+			<div class="form-group">
+				<label class="col-sm-3 control-label">放款时间：</label>
+				<div class="col-sm-8">
+					<div class="input-group date">
+					<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+				    <input id="loanTime" name="loanTime"  placeholder="yyyy-MM-dd" type="text" class="form-control time-input">
+					</div>
+				</div>
+			</div>
+			<div class="form-group">	
+				<label class="col-sm-3 control-label">放款账号：</label>
+				<div class="col-sm-8">
+					<input id="loanAccount" name="loanAccount" class="form-control" type="text">
+				</div>
+			</div>
+		</form>
+	</div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+		var prefix = ctx + "apply"
+		function submitHandler() {
+	        if ($.validate.form()) {
+	            $.operate.save(prefix + "/add", $('#form-apply-add').serialize());
+	        }
+	    }
+	</script>
+</body>
+</html>

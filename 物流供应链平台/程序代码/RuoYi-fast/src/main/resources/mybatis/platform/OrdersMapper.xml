@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.platform.apply.mapper.OrdersMapper">
+	
+	<!-- 根据申请和订单表的属性进行条件查询 -->
+	<select id="selectOrdersByApplyOrders" resultType="com.ruoyi.project.platform.apply.domain.Orders">
+		select o.*
+		FROM orders o LEFT JOIN apply_orders ao ON o.id = ao.orders_id
+		<if test="ew != null">
+		<where>
+		  ${ew.sqlSegment}
+		</where>
+		</if>
+	</select>
+	
+	<!-- 根据运单和订单表的属性进行条件查询 -->
+	<select id="selectOrdersByOrdersWaybills" resultType="com.ruoyi.project.platform.apply.domain.Orders">
+		SELECT o.* FROM
+		orders o LEFT JOIN orders_waybills ow on ow.orders_id = o.id
+		<if test="ew != null">
+		<where>
+		  ${ew.sqlSegment}
+		</where>
+		</if>
+	</select>
+	
+</mapper>
